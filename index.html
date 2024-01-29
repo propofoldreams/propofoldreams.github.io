@@ -2,79 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My CV</title>
-
+    <title>Academic CV</title>
     <style>
         body {
-            background-color: white; /* Default background color */
-            color: black; /* Default text color */
-        }
-
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #121212; /* Dark mode background color */
-                color: #ffffff; /* Dark mode text color */
-            }
-        }
-
-        /* Add your existing styles here */
-
-        h1, h2, h3 {
-            color: #3498db; /* Header color */
-        }
-
-        ul {
-            list-style-type: none;
+            background-color: #333;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
             padding: 0;
         }
 
-        li {
-            margin-bottom: 10px;
+        header {
+            background-color: #222;
+            padding: 20px;
+            text-align: center;
+        }
+
+        section {
+            margin: 20px;
+        }
+
+        h1, h2, h3 {
+            color: #00bcd4;
+        }
+
+        .education, .publications, .contact {
+            border-left: 3px solid #00bcd4;
+            padding-left: 10px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
-    <h1>John Doe</h1>
+    <header>
+        <h1>Your Name</h1>
+        <p>Academic Curriculum Vitae</p>
+    </header>
 
-    <h2>Education</h2>
-    <ul>
-        <li><strong>Ph.D. in Computer Science</strong>
-            <ul>
-                <li>University of Awesome, 2020</li>
-            </ul>
-        </li>
-        <li><strong>M.Sc. in Artificial Intelligence</strong>
-            <ul>
-                <li>Tech Institute, 2016</li>
-            </ul>
-        </li>
-    </ul>
+    <section class="personal-info">
+        <h2>Personal Information</h2>
+        <p>Date of Birth: DD/MM/YYYY</p>
+        <p>Address: Your Address</p>
+        <p>Email: your.email@example.com</p>
+    </section>
 
-    <h2>Experience</h2>
-    <ul>
-        <li><strong>Senior Software Engineer</strong>
-            <ul>
-                <li>Big Tech Co., 2020 - Present</li>
-                <li>Responsibilities include...</li>
-            </ul>
-        </li>
-        <li><strong>Software Developer</strong>
-            <ul>
-                <li>Startup X, 2016 - 2020</li>
-                <li>Worked on...</li>
-            </ul>
-        </li>
-    </ul>
+    <section class="education">
+        <h2>Education</h2>
+        <h3>Ph.D. in Computer Science</h3>
+        <p>University Name, City, Year - Year</p>
+        <p>Thesis Title: Your Thesis Title</p>
 
-    <h2>Skills</h2>
-    <ul>
-        <li>Programming languages: Java, Python, C++</li>
-        <li>Web development: HTML, CSS, JavaScript</li>
-        <li>Machine learning: TensorFlow, PyTorch</li>
-    </ul>
+        <h3>Master of Science in Computer Science</h3>
+        <p>University Name, City, Year - Year</p>
+
+        <h3>Bachelor of Science in Computer Science</h3>
+        <p>University Name, City, Year - Year</p>
+    </section>
+
+    <section class="publications">
+        <h2>Publications</h2>
+        <p>Your Name. "Title of Your Paper." <em>Journal Name</em>, Volume(Issue), Year.</p>
+        <p>Your Name. "Title of Your Paper." <em>Conference Name</em>, Year.</p>
+    </section>
+
+    <section class="contact">
+        <h2>Contact Information</h2>
+        <p>Email: your.email@example.com</p>
+        <p>LinkedIn: linkedin.com/in/yourprofile</p>
+        <p>Website: yourwebsite.com</p>
+    </section>
 
 </body>
 </html>
