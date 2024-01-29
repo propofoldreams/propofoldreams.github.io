@@ -7,10 +7,19 @@
 
     <!-- Dark mode styles -->
     <style>
+        
+        @font-face {
+  font-family: 'F56regular';
+  src: url('F5.6-Regular.woff2') format('woff2'),
+       url('F5.6-Regular.woff') format('woff'),
+       url('F5.6-Regular.eot') format('eot');
+  /* Add more formats if needed */
+}
+
         body {
             background-color: #222;
             color: #fff;
-            font-family: 'Inconsolata', monospace;
+            font-family: 'F56regular', sans-serif;
         }
         header, section, footer {
             background-color: #333;
@@ -24,7 +33,8 @@
     </style>
 
     <!-- Include Inconsolata font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400&display=swap" rel="stylesheet">
+
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400&display=swap" rel="stylesheet"> -->
 
 </head>
 <body>
