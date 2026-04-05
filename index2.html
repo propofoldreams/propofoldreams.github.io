@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Propofol Dreams</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/assets/index-B1JDg7U9.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Do01-tVE.css">
+  </head>
+  <body>
+    <div id="app" class="app-container">
+      
+      <!-- Top Nav -->
+      <div class="top-nav glass-panel">
+        <h1 style="margin: 0; font-size: 1.2rem; font-weight: 600; color: #fff;">Target Controlled Infusion</h1>
+        <button id="settings-btn" class="icon-btn" aria-label="Settings">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Main Results Display Area -->
+      <main id="main-content">
+        <!-- TCI Results -->
+        <div id="tci-view" class="view active fade-in">
+          <div class="card glass-card result-card p-0">
+            <div class="top-stat-row">
+              <span class="label">Initial Bolus:</span>
+              <span class="value highlight" id="res-tci-bolus">--</span>
+              <span class="unit">mL</span>
+            </div>
+            <div class="table-container">
+              <table id="tci-table">
+                <thead>
+                  <tr>
+                    <th>Time <span class="unit-xs">(hr:m)</span></th>
+                    <th class="right-align">Rate <span class="unit-xs">(mL/hr)</span></th>
+                  </tr>
+                </thead>
+                <tbody id="tci-table-body">
+                  <!-- JS rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Bottom Input Panel in Flex Flow -->
+      <div class="bottom-panel glass-panel">
+        
+        <!-- Target Input AT TOP -->
+        <div class="mode-inputs">
+          <div class="input-group inline-group" style="margin-bottom: 6px;">
+            <div class="target-label-col">
+              <span id="target-label-main">Target</span>
+              <span id="target-label-unit" class="unit-text">(CeT, µg/mL)</span>
+            </div>
+            <div class="stepper lg-stepper">
+              <button class="step-btn" data-target="shared-target" data-step="-0.1">-</button>
+              <input type="number" id="shared-target" step="0.1" min="0.1" max="20.0" value="3.0">
+              <button class="step-btn" data-target="shared-target" data-step="0.1">+</button>
+            </div>
+          </div>
+        </div>
+
+        <hr class="panel-divider" id="patient-divider">
+
+        <!-- Patient Detail Grid -->
+        <div id="patient-grid">
+          <button id="btn-minimize-patient" class="minimize-bar-btn" aria-label="Minimize Patient Form">
+            <div class="minimize-grabber-line"></div>
+            <div class="minimize-text">Minimize Form</div>
+          </button>
+          <div class="patient-header" style="margin-top: 8px;">
+            <button id="btn-reset-patient" class="icon-btn text-btn" style="margin-right: auto; padding: 4px 10px; font-size: 13px; border-radius: 4px; background: rgba(255,255,255,0.05);">
+              Reset Parameters
+            </button>
+          </div>
+          
+          <div class="input-group" id="tci-drug-container" style="margin-bottom: 12px;">
+            <label for="tci-drug">Infusion Drug</label>
+            <div class="select-wrapper">
+              <select id="tci-drug">
+                <option value="propofol">Propofol</option>
+                <option value="remifentanil">Remifentanil</option>
+                <option value="dexmedetomidine">Dexmedetomidine</option>
+                <option value="remimazolam">Remimazolam</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="patient-grid-layout">
+            <div class="input-group">
+              <label for="pat-sex">Sex</label>
+              <div class="select-wrapper">
+                <select id="pat-sex">
+                  <option value="Male">M</option>
+                  <option value="Female">F</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="pat-age">Age(y)</label>
+              <input type="number" id="pat-age" value="40" min="1" max="105">
+            </div>
+            <div class="input-group">
+              <label for="pat-weight">Wt(kg)</label>
+              <input type="number" id="pat-weight" value="70" min="1" max="350">
+            </div>
+            <div class="input-group">
+              <label for="pat-height">Ht(cm)</label>
+              <input type="number" id="pat-height" value="170" min="50" max="250">
+            </div>
+          </div>
+        </div>
+
+        <!-- Patient Summary (condensed horizontal strip) -->
+        <div id="patient-summary" class="patient-summary bg-elevated" style="display: none;">
+          <span id="pat-summary-text"></span>
+          <button id="btn-edit-patient" class="icon-btn expand-btn">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Settings Overlay -->
+      <div id="settings-overlay" class="overlay">
+        <div class="modal glass-modal">
+          <div class="modal-header">
+            <h2>Settings</h2>
+            <button id="close-settings" class="icon-btn">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="settings-section">
+              <h3>Drug Concentrations</h3>
+              <div class="input-group inline-group">
+                <label>Propofol (mg/mL)</label>
+                <div class="select-wrapper inline-select">
+                  <select id="set-conc-propofol">
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group inline-group">
+                <label>Remifentanil (µg/mL)</label>
+                <div class="select-wrapper inline-select">
+                  <select id="set-conc-remi">
+                    <option value="20">20</option>
+                    <option value="40">40</option>
+                    <option value="50" selected>50</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group inline-group">
+                <label>Dexmedetomidine (µg/mL)</label>
+                <div class="select-wrapper inline-select">
+                  <select id="set-conc-dex">
+                    <option value="4" selected>4</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group inline-group">
+                <label>Remimazolam (mg/mL)</label>
+                <div class="select-wrapper inline-select">
+                  <select id="set-conc-remimaz">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="settings-section mt-16">
+              <h3>System</h3>
+              <div class="input-group inline-group">
+                <label>Time Step (s)</label>
+                <input type="number" id="set-time-step" value="10" min="1" max="60">
+              </div>
+              <div class="input-group inline-group">
+                <label>Max Rate (mL/hr)</label>
+                <input type="number" id="set-max-rate" value="1200" min="100" max="9999">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- No Info Overlay needed in TCI Mode currently -->
+
+
+    <!-- Force Offline Cache Reset & Import main -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister();
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
