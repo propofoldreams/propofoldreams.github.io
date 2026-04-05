@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Propofol Dreams</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-B3aNdGpF.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-inUH-cAj.css">
+    <script type="module" crossorigin src="/assets/index-BHGgp8c4.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DhKEXoRO.css">
   </head>
   <body style="height: 100dvh;">
     <div id="app" class="app-container" style="height: 100dvh;">
@@ -60,9 +60,9 @@
               <span id="target-label-unit" class="unit-text">(CeT, µg/mL)</span>
             </div>
             <div class="stepper lg-stepper">
-              <button class="step-btn" data-target="shared-target" data-step="-0.1">-</button>
+              <button class="step-btn minus-btn" data-target="shared-target" data-step="0.1">-</button>
               <input type="number" id="shared-target" step="0.1" min="0.1" max="20.0" value="3.0">
-              <button class="step-btn" data-target="shared-target" data-step="0.1">+</button>
+              <button class="step-btn plus-btn" data-target="shared-target" data-step="0.1">+</button>
             </div>
           </div>
         </div>
@@ -73,19 +73,15 @@
         <div id="patient-grid">
           <button id="btn-minimize-patient" class="minimize-bar-btn" aria-label="Minimize Patient Form">
             <div style="display:flex; gap:96px; align-items:center; opacity:0.9;">
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="#aaaaaa" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="#aaaaaa" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="#aaaaaa" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </div>
           </button>
-          <div class="patient-header" style="margin-top: 8px;">
-            <button id="btn-reset-patient" class="icon-btn text-btn" style="margin-right: auto; padding: 4px 10px; font-size: 13px; border-radius: 4px; background: rgba(255,255,255,0.05);">
-              Reset Parameters
-            </button>
-          </div>
           
-          <div class="input-group condensed-input drug-select" id="tci-drug-container" style="margin-bottom: 8px;">
-            <div class="select-wrapper" style="flex:1;">
+          <div class="inline-group" style="display:flex; margin-top:8px; margin-bottom:8px; gap:8px;">
+            <div class="input-group condensed-input drug-select" id="tci-drug-container" style="flex:1;">
+              <div class="select-wrapper" style="flex:1;">
               <select id="tci-drug" style="background:transparent; border:none; padding:0; height:100%;">
                 <option value="propofol">Propofol</option>
                 <option value="remifentanil">Remifentanil</option>
@@ -93,6 +89,10 @@
                 <option value="remimazolam">Remimazolam</option>
               </select>
             </div>
+            </div>
+            <button id="btn-reset-patient" class="icon-btn" aria-label="Reset Patient Info" style="background: rgba(255,255,255,0.05); border-radius: 10px; width:48px; border: 1px solid var(--border);">
+              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            </button>
           </div>
 
           <div class="patient-grid-layout">
@@ -194,6 +194,29 @@
                 <label>Max Rate (mL/hr)</label>
                 <input type="number" id="set-max-rate" value="1200" min="100" max="9999">
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Time Sync Overlay -->
+      <div id="time-overlay" class="overlay">
+        <div class="modal glass-modal">
+          <div class="modal-header">
+            <h2>Set Clock Time</h2>
+            <button id="close-time-modal" class="icon-btn">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p style="color:var(--text-muted); font-size:14px; margin-bottom:16px;">Map this row's elapsed infusion time to a real-world clock time.</p>
+            <div class="input-group">
+              <input type="time" id="sync-time-input" style="font-size:24px; padding:12px; height:56px; text-align:center;">
+            </div>
+            <input type="hidden" id="sync-time-row-elapsed">
+            <div style="display:flex; justify-content:space-between; margin-top:20px; gap:12px;">
+              <button id="btn-clear-time" class="mode-btn" style="background:rgba(255,0,0,0.1); color:#ff6b6b; flex:1;">Clear Sync</button>
+              <button id="btn-sync-time" class="mode-btn active" style="flex:1;">Sync Table</button>
             </div>
           </div>
         </div>
