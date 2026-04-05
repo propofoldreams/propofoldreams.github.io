@@ -1,119 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Propofol Dreams</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/assets/index-BQ9ApAGJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CS_4q2_P.css">
+  </head>
+  <body style="height: 100dvh;">
+    <div id="app" class="app-container" style="height: 100dvh;">
+      
+      <!-- Top Nav -->
+      <div class="top-nav glass-panel" style="padding: 4px 16px;">
+        <img src="/pdtci_logo.png" onerror="this.src='/icon.png'" alt="Propofol Dreams" style="height: 28px; border-radius: 4px;">
+        <button id="settings-btn" class="icon-btn" aria-label="Settings">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
 
-    <!-- Dark mode styles -->
-    <style>
+      <!-- Main Results Display Area -->
+      <main id="main-content">
+        <!-- TCI Results -->
+        <div id="tci-view" class="view active fade-in">
+          <div class="card glass-card result-card p-0">
+            <div class="top-stat-row">
+              <span class="label">Initial Bolus:</span>
+              <span class="value highlight" id="res-tci-bolus">--</span>
+              <span class="unit">mL</span>
+            </div>
+            <div class="table-container">
+              <table id="tci-table">
+                <thead>
+                  <tr>
+                    <th>Time <span class="unit-xs">(hr:m)</span></th>
+                    <th class="right-align">Rate <span class="unit-xs">(mL/hr)</span></th>
+                  </tr>
+                </thead>
+                <tbody id="tci-table-body">
+                  <!-- JS rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Bottom Input Panel in Flex Flow -->
+      <div class="bottom-panel glass-panel">
         
-        @font-face {
-  font-family: 'F56regular';
-  src: url('F5.6-Regular.woff2') format('woff2'),
-       url('F5.6-Regular.woff') format('woff'),
-       url('F5.6-Regular.eot') format('eot');
-  /* Add more formats if needed */
-}
+        <!-- Target Input AT TOP -->
+        <div class="mode-inputs">
+          <div class="input-group inline-group" style="margin-bottom: 6px;">
+            <div class="target-label-col">
+              <span id="target-label-main">Target</span>
+              <span id="target-label-unit" class="unit-text">(CeT, µg/mL)</span>
+            </div>
+            <div class="stepper lg-stepper">
+              <button class="step-btn minus-btn" data-target="shared-target" data-step="0.1">-</button>
+              <input type="number" id="shared-target" step="0.1" min="0.1" max="20.0" value="3.0">
+              <button class="step-btn plus-btn" data-target="shared-target" data-step="0.1">+</button>
+            </div>
+          </div>
+        </div>
 
-        
-        body {
-            background-color: #222;
-            color: #fff;
-            font-family: 'Source Code Pro', monospace;
-        }
-        header, section, footer {
-            background-color: #333;
-            padding: 20px;
-            margin: 10px;
-            border-radius: 8px;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            color: #ffcc00;
-        }
-        
-        a:link {
-  color: yellow;
-  background-color: transparent;
-  text-decoration: none;
-}
+        <hr class="panel-divider" id="patient-divider">
 
-a:visited {
-  color: orange;
-  background-color: transparent;
-  text-decoration: none;
-}
+        <!-- Patient Detail Grid -->
+        <div id="patient-grid">
+          <button id="btn-minimize-patient" class="minimize-bar-btn" aria-label="Minimize Patient Form">
+            <div style="display:flex; gap:96px; align-items:center; opacity:0.9;">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="#aaaaaa" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="#aaaaaa" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="#aaaaaa" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+          </button>
+          
+          <div class="inline-group" style="display:flex; margin-top:8px; margin-bottom:8px; gap:8px;">
+            <div class="input-group condensed-input drug-select" id="tci-drug-container" style="flex:1;">
+              <div class="select-wrapper" style="flex:1;">
+              <select id="tci-drug" style="background:transparent; border:none; padding:0; height:100%;">
+                <option value="propofol">Propofol</option>
+                <option value="remifentanil">Remifentanil</option>
+                <option value="dexmedetomidine">Dexmedetomidine</option>
+                <option value="remimazolam">Remimazolam</option>
+              </select>
+            </div>
+            </div>
+            <button id="btn-reset-patient" class="icon-btn" aria-label="Reset Patient Info" style="background: rgba(255,255,255,0.05); border-radius: 10px; width:48px; border: 1px solid var(--border);">
+              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            </button>
+          </div>
 
-a:hover {
-  color: #ffcc00;
-  background-color: transparent;
-  text-decoration: underline;
-}
+          <div class="patient-grid-layout">
+            <div class="sex-toggle" id="sex-toggle">
+               <button class="sex-btn active" data-val="Male">M</button>
+               <button class="sex-btn" data-val="Female">F</button>
+               <input type="hidden" id="pat-sex" value="Male">
+            </div>
+            
+            <div class="condensed-input stepper">
+              <button class="step-btn minus-btn" data-target="pat-age" aria-label="Decrease age">-</button>
+              <input type="number" id="pat-age" value="40" min="1" max="120">
+              <div class="input-unit">yr</div>
+              <button class="step-btn plus-btn" data-target="pat-age" aria-label="Increase age">+</button>
+            </div>
 
-a:active {
-  color: yellow;
-  background-color: transparent;
-  text-decoration: underline;
-}
+            <div class="condensed-input stepper">
+              <button class="step-btn minus-btn" data-target="pat-weight" aria-label="Decrease weight">-</button>
+              <input type="number" id="pat-weight" value="70" min="10" max="300">
+              <div class="input-unit" style="width:20px;">kg</div>
+              <button class="step-btn plus-btn" data-target="pat-weight" aria-label="Increase weight">+</button>
+            </div>
 
-        
-    </style>
+            <div class="condensed-input stepper">
+              <button class="step-btn minus-btn" data-target="pat-height" aria-label="Decrease height">-</button>
+              <input type="number" id="pat-height" value="170" min="50" max="250">
+              <div class="input-unit" style="width:20px;">cm</div>
+              <button class="step-btn plus-btn" data-target="pat-height" aria-label="Increase height">+</button>
+            </div>
+          </div>
+        </div>
 
-    <!-- Include Inconsolata font -->
+        <!-- Patient Summary (condensed horizontal strip) -->
+        <div id="patient-summary" class="patient-summary bg-elevated" style="display: none;">
+          <span id="pat-summary-text"></span>
+          <button id="btn-edit-patient" class="icon-btn expand-btn">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="18 15 12 9 6 15"></polyline></svg>
+          </button>
+        </div>
 
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap" rel="stylesheet">
+      </div>
 
-</head>
-<body>
+      <!-- Settings Overlay -->
+      <div id="settings-overlay" class="overlay">
+        <div class="modal glass-modal">
+          <div class="modal-header">
+            <h2>Settings</h2>
+            <button id="close-settings" class="icon-btn">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="settings-section">
+              <h3>Drug Concentrations</h3>
+              <div class="input-group inline-group">
+                <label>Propofol (mg/mL)</label>
+                <div class="select-wrapper inline-select">
+                  <select id="set-conc-propofol">
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group inline-group">
+                <label>Remifentanil (µg/mL)</label>
+                <div class="select-wrapper inline-select">
+                  <select id="set-conc-remi">
+                    <option value="20">20</option>
+                    <option value="40">40</option>
+                    <option value="50" selected>50</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group inline-group">
+                <label>Dexmedetomidine (µg/mL)</label>
+                <div class="select-wrapper inline-select">
+                  <select id="set-conc-dex">
+                    <option value="4" selected>4</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group inline-group">
+                <label>Remimazolam (mg/mL)</label>
+                <div class="select-wrapper inline-select">
+                  <select id="set-conc-remimaz">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="settings-section mt-16">
+              <h3>System</h3>
+              <div class="input-group inline-group">
+                <label>Time Step (s)</label>
+                <input type="number" id="set-time-step" value="10" min="1" max="60">
+              </div>
+              <div class="input-group inline-group">
+                <label>Max Rate (mL/hr)</label>
+                <input type="number" id="set-max-rate" value="1200" min="100" max="9999">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Time Sync Overlay -->
+      <div id="time-overlay" class="overlay">
+        <div class="modal glass-modal">
+          <div class="modal-header">
+            <h2>Set Clock Time</h2>
+            <button id="close-time-modal" class="icon-btn">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p style="color:var(--text-muted); font-size:14px; margin-bottom:16px;">Sync infusion time to real-world clock time</p>
+            <div class="input-group">
+              <input type="time" id="sync-time-input" style="font-size:24px; padding:12px; height:56px; text-align:center; width:100%; box-sizing:border-box;">
+            </div>
+            <input type="hidden" id="sync-time-row-elapsed">
+            <div style="display:flex; justify-content:space-between; margin-top:20px; gap:12px;">
+              <button id="btn-clear-time" class="mode-btn" style="background:rgba(255,0,0,0.1); color:#ff6b6b; flex:1;">Clear Sync</button>
+              <button id="btn-sync-time" class="mode-btn active" style="flex:1;">Sync Time</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- No Info Overlay needed in TCI Mode currently -->
 
-    <header>
-        <h1>george zhong</h1>
-    </header>
 
-    <section>
-        <h2>research interests</h2>
-        <p><a href = "https://app.propofoldreams.org/">Propofol Dreams App</a></p>
-        <p>TCI pharmacology and algorithms</p>
-        <p>Environmental sustainability</p>
-        <p>High risk anaesthesia</p>
-        <!-- Add more education details as needed -->
-    </section>
-
-
-    <section>
-        <h2>selected publications</h2>
-        
-<div class="publication">
-    <h3>TCI algorithms</h3>
-    <p>Simple model for predicting the awakening propofol plasma concentration during target-controlled infusion with the Marsh model. <i>British Journal of Anaesthesia</i>, <b>2025</b> <a href = "https://doi.org/10.1016/j.bja.2025.01.007">(doi)</a></p>
-    <p>General purpose propofol target controlled infusions using the Marsh model with adjusted body weight. <i>Journal of Anesthesia</i>, <b>2024</b> <a href = "https://doi.org/10.1007/s00540-024-03312-w">(doi)</a></p>
-</div>
-<br>
-        
-<div class="publication">
-    <h3>high flow TIVA</h3>
-    <p>Environmental and economic impact of using increased fresh gas flow to reduce carbon dioxide absorbent consumption during clinical anaesthesia practice. <i>British Journal of Anaesthesia</i>, <b>2022</b> <a href = "https://doi.org/10.1016/j.bja.2022.09.003">(doi)</a></p>
-    <p>Environmental and economic impact of using increased fresh gas flow to reduce CO2 absorbent consumption in the absence of inhalational anaesthetics. <i>British Journal of Anaesthesia</i>, <b>2020</b> <a href = "https://doi.org/10.1016/j.bja.2020.07.043">(doi)</a></p>
-</div>
-        <br>
-    
-<div class="publication">
-    <h3>environmental sustainability</h3>
-    <p>Reducing propofol waste during TIVA by pre-operative estimation of requirement: A single-center retrospective analysis. <i>Journal of Clinical Anesthesia</i>, <b>2026</b> <a href = "https://doi.org/10.1016/j.jclinane.2026.112160">(doi)</a></p>
-    <p>Environmental impact of high-flow nasal oxygenation. <i>Anaesthesia</i>, <b>2023</b> <a href = "https://doi.org/10.1111/anae.15963">(doi)</a></p>
-    <p>Audit of carbon dioxide absorbent replacement triggers and potential impact on wastage. <i>British Journal of Anaesthesia</i>, <b>2023</b> <a href = "https://doi.org/10.1016/j.bja.2023.11.031">(doi)</a></p>
-</div>
-<br>
-<div class="publication">
-    <h3>anaesthesia techniques</h3>
-    <p>Airway topicalisation via direct injection of local anaesthetic into the lumen of high flow oxygenation devices. <i>Anaesthesia and Intensive Care</i>, <b>2020</b> <a href = "https://doi.org/10.1177/0310057x20946049">(doi)</a></p>
-</div>
-    </section>
-
-    <footer>
-        <p>have a novel idea and interested in cross disciplinary collaboration? reach out to me and let's propofol dream together!</p>
-        <p><a href="mailto:george@propofoldreams.org">Email</a> | <a href = "https://orcid.org/0000-0003-0286-4606">ORCiD</a> | <a href = "https://propofoldreams.org">Website</a></p>
-    </footer>
-
-</body>
+    <!-- Force Offline Cache Reset & Import main -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister();
+          }
+        });
+      }
+    </script>
+  </body>
 </html>
