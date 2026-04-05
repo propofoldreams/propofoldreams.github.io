@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Propofol Dreams</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-B1JDg7U9.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-Do01-tVE.css">
+    <script type="module" crossorigin src="/assets/index-B3aNdGpF.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-inUH-cAj.css">
   </head>
-  <body>
-    <div id="app" class="app-container">
+  <body style="height: 100dvh;">
+    <div id="app" class="app-container" style="height: 100dvh;">
       
       <!-- Top Nav -->
-      <div class="top-nav glass-panel">
-        <h1 style="margin: 0; font-size: 1.2rem; font-weight: 600; color: #fff;">Target Controlled Infusion</h1>
+      <div class="top-nav glass-panel" style="padding: 4px 16px;">
+        <img src="/pdtci_logo.png" onerror="this.src='/icon.png'" alt="Propofol Dreams" style="height: 28px; border-radius: 4px;">
         <button id="settings-btn" class="icon-btn" aria-label="Settings">
           <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
@@ -72,8 +72,11 @@
         <!-- Patient Detail Grid -->
         <div id="patient-grid">
           <button id="btn-minimize-patient" class="minimize-bar-btn" aria-label="Minimize Patient Form">
-            <div class="minimize-grabber-line"></div>
-            <div class="minimize-text">Minimize Form</div>
+            <div style="display:flex; gap:96px; align-items:center; opacity:0.9;">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="3" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
           </button>
           <div class="patient-header" style="margin-top: 8px;">
             <button id="btn-reset-patient" class="icon-btn text-btn" style="margin-right: auto; padding: 4px 10px; font-size: 13px; border-radius: 4px; background: rgba(255,255,255,0.05);">
@@ -81,10 +84,9 @@
             </button>
           </div>
           
-          <div class="input-group" id="tci-drug-container" style="margin-bottom: 12px;">
-            <label for="tci-drug">Infusion Drug</label>
-            <div class="select-wrapper">
-              <select id="tci-drug">
+          <div class="input-group condensed-input drug-select" id="tci-drug-container" style="margin-bottom: 8px;">
+            <div class="select-wrapper" style="flex:1;">
+              <select id="tci-drug" style="background:transparent; border:none; padding:0; height:100%;">
                 <option value="propofol">Propofol</option>
                 <option value="remifentanil">Remifentanil</option>
                 <option value="dexmedetomidine">Dexmedetomidine</option>
@@ -94,26 +96,31 @@
           </div>
 
           <div class="patient-grid-layout">
-            <div class="input-group">
-              <label for="pat-sex">Sex</label>
-              <div class="select-wrapper">
-                <select id="pat-sex">
-                  <option value="Male">M</option>
-                  <option value="Female">F</option>
-                </select>
-              </div>
+            <div class="sex-toggle" id="sex-toggle">
+               <button class="sex-btn active" data-val="Male">M</button>
+               <button class="sex-btn" data-val="Female">F</button>
+               <input type="hidden" id="pat-sex" value="Male">
             </div>
-            <div class="input-group">
-              <label for="pat-age">Age(y)</label>
-              <input type="number" id="pat-age" value="40" min="1" max="105">
+            
+            <div class="condensed-input stepper">
+              <button class="step-btn minus-btn" data-target="pat-age" aria-label="Decrease age">-</button>
+              <input type="number" id="pat-age" value="40" min="1" max="120">
+              <div class="input-unit">yr</div>
+              <button class="step-btn plus-btn" data-target="pat-age" aria-label="Increase age">+</button>
             </div>
-            <div class="input-group">
-              <label for="pat-weight">Wt(kg)</label>
-              <input type="number" id="pat-weight" value="70" min="1" max="350">
+
+            <div class="condensed-input stepper">
+              <button class="step-btn minus-btn" data-target="pat-weight" aria-label="Decrease weight">-</button>
+              <input type="number" id="pat-weight" value="70" min="10" max="300">
+              <div class="input-unit" style="width:20px;">kg</div>
+              <button class="step-btn plus-btn" data-target="pat-weight" aria-label="Increase weight">+</button>
             </div>
-            <div class="input-group">
-              <label for="pat-height">Ht(cm)</label>
+
+            <div class="condensed-input stepper">
+              <button class="step-btn minus-btn" data-target="pat-height" aria-label="Decrease height">-</button>
               <input type="number" id="pat-height" value="170" min="50" max="250">
+              <div class="input-unit" style="width:20px;">cm</div>
+              <button class="step-btn plus-btn" data-target="pat-height" aria-label="Increase height">+</button>
             </div>
           </div>
         </div>
