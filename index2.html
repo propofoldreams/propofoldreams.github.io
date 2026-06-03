@@ -9,8 +9,8 @@
     <meta name="theme-color" content="#000000">
     <link rel="apple-touch-icon" href="/icon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-CIefNyvw.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-gg3KUo0C.css">
+    <script type="module" crossorigin src="/assets/index-Unuz4Ajq.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Cn3MwEmB.css">
   <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
   <body style="height: 100dvh;">
     <div id="app" class="app-container" style="height: 100dvh;">
@@ -32,9 +32,11 @@
         <div id="tci-view" class="view active fade-in">
           <div class="card glass-card result-card p-0">
             <div class="top-stat-row">
-              <span class="label">Initial Bolus:</span>
-              <span class="value highlight" id="res-tci-bolus">--</span>
-              <span class="unit">mL</span>
+              <div class="bolus-stat">
+                <span class="label">Initial Bolus:</span>
+                <span class="value highlight" id="res-tci-bolus">--</span>
+                <span class="unit">mL</span>
+              </div>
             </div>
             <div class="table-container">
               <table id="tci-table">
@@ -42,6 +44,7 @@
                   <tr>
                     <th>Time <span class="unit-xs">(hr:m)</span></th>
                     <th class="right-align">Rate <span class="unit-xs">(mL/hr)</span></th>
+                    <th class="right-align weight-rate-col" style="opacity: 0.7; font-weight: 500;">Dose <span id="tci-weight-rate-unit" class="unit-xs"></span></th>
                   </tr>
                 </thead>
                 <tbody id="tci-table-body">
@@ -68,9 +71,9 @@
               <input type="number" id="shared-target" step="0.1" min="0.1" max="20.0" value="3.0" style="width: 100%; box-sizing: border-box; text-align: center;">
               <button class="step-btn plus-btn" data-target="shared-target" data-step="0.1">+</button>
             </div>
-            <div class="target-ebis-col" id="target-ebis-col" style="display: flex; visibility: hidden; flex-direction: column; align-items: center; justify-content: center; padding-left: 12px; min-width: 48px;">
-              <span style="font-size: 11px; color: var(--text-muted);">eBIS</span>
-              <span id="target-ebis-value" style="font-size: 18px; font-weight: 700; color: #4FC3F7;">-</span>
+            <div class="target-ebis-col ebis-monitor-card" id="target-ebis-col" style="visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 56px; height: 44px; padding: 4px;">
+              <span class="ebis-title" style="font-size: 9px; font-weight: 700; opacity: 0.7;">eBIS</span>
+              <span id="target-ebis-value" class="ebis-value" style="font-size: 20px; font-weight: 800; font-family: monospace;">-</span>
             </div>
           </div>
         </div>
@@ -89,12 +92,12 @@
           
           <div class="inline-group" style="display:flex; margin-top:8px; margin-bottom:8px; gap:8px;">
             <div class="input-group condensed-input drug-select" id="tci-drug-container" style="flex:1;">
-              <div class="select-wrapper" style="flex:1;">
-              <select id="tci-drug" style="background:transparent; border:none; padding:0; height:100%;">
+              <div class="select-wrapper" style="flex:1; width:100%; display:flex; align-items:center;">
+              <select id="tci-drug" style="background:transparent; border:none; padding: 0 36px 0 0; height:100%; width:100%; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;">
                 <option value="propofol">Propofol</option>
                 <option value="remifentanil">Remifentanil</option>
                 <option value="dexmedetomidine">Dexmedetomidine</option>
-                <option value="remimazolam">Remimazolam</option>
+                <option value="remimazolam">RemiMAZolam</option>
               </select>
             </div>
             </div>
@@ -127,7 +130,10 @@
             <div class="condensed-input stepper">
               <button class="step-btn minus-btn" data-target="pat-height" aria-label="Decrease height">-</button>
               <input type="number" id="pat-height" value="170" min="50" max="250">
-              <div class="input-unit" style="width:20px;">cm</div>
+              <div class="input-unit" style="display: flex; align-items: center; gap: 4px; width: auto; min-width: 28px; padding-right: 8px; white-space: nowrap;">
+                <span id="age-ped-badge" class="ped-badge" style="display: none; cursor: pointer;" title="Paediatric Mode - Click to set 50th centile height">🧸</span>
+                <span>cm</span>
+              </div>
               <button class="step-btn plus-btn" data-target="pat-height" aria-label="Increase height">+</button>
             </div>
           </div>
@@ -183,7 +189,7 @@
                 </div>
               </div>
               <div class="input-group inline-group">
-                <label>Remimazolam (mg/mL)</label>
+                <label>RemiMAZolam (mg/mL)</label>
                 <div class="select-wrapper inline-select">
                   <select id="set-conc-remimaz">
                     <option value="1" selected>1</option>
@@ -225,6 +231,30 @@
             <div style="display:flex; justify-content:space-between; margin-top:20px; gap:12px;">
               <button id="btn-clear-time" class="mode-btn" style="background:rgba(255,0,0,0.1); color:#ff6b6b; flex:1;">Clear Sync</button>
               <button id="btn-sync-time" class="mode-btn active" style="flex:1;">Sync Time</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Paediatric Height Assist Overlay -->
+      <div id="ped-overlay" class="overlay">
+        <div class="modal glass-modal">
+          <div class="modal-header">
+            <h2>Paediatric Height Assist</h2>
+            <button id="close-ped-modal" class="icon-btn" aria-label="Close Assistant">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p style="color:var(--text-main); font-size:14px; margin-bottom:12px; line-height: 1.5;">
+              Would you like to adjust the patient's height to the <strong>50th centile</strong> for a <span id="ped-modal-sex" style="font-weight:700; color:var(--accent-color);">male</span> child of <span id="ped-modal-age" style="font-weight:700; color:var(--accent-color);">10</span> years?
+            </p>
+            <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">
+              Estimated Height: <strong id="ped-modal-height-est" style="color:#ffffff; font-size: 16px; font-family: monospace;">138</strong> cm
+            </p>
+            <div style="display:flex; justify-content:space-between; gap:12px; margin-top:20px;">
+              <button id="btn-cancel-ped" class="mode-btn" style="flex:1; border: 1px solid var(--border); border-radius: 8px;">Cancel</button>
+              <button id="btn-apply-ped" class="mode-btn active" style="flex:1; border-radius: 8px;">Apply Height</button>
             </div>
           </div>
         </div>
