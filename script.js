@@ -26,7 +26,7 @@ function drawMatrix() {
     if (!isMatrixActive) return;
     
     ctx.fillStyle = 'rgba(3, 8, 4, 0.08)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0,  canvas.width, canvas.height);
     ctx.font = fontSize + 'px monospace';
 
     for (let i = 0; i < drops.length; i++) {
@@ -73,7 +73,7 @@ const contentDatabase = {
 </ul>`,
 
     contact: `
-<p>Interested in cross-disciplinary physiological modeling? Let's dream together.</p>
+<p>Interested in cross-disciplinary collaboration and research? Let's propofol dream together!</p>
 <table style="margin-top: 5px; border-spacing: 10px 5px; font-family: var(--font-mono)">
     <tr><td><strong>Email:</strong></td><td><a href="mailto:george@propofoldreams.org">george@propofoldreams.org</a></td></tr>
     <tr><td><strong>ORCiD:</strong></td><td><a href="https://orcid.org/0000-0003-0286-4606" target="_blank">0000-0003-0286-4606</a></td></tr>
