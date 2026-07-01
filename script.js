@@ -26,7 +26,7 @@ function drawMatrix() {
     if (!isMatrixActive) return;
     
     ctx.fillStyle = 'rgba(3, 8, 4, 0.08)';
-    ctx.fillRect(0, 0,  canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.font = fontSize + 'px monospace';
 
     for (let i = 0; i < drops.length; i++) {
@@ -238,6 +238,33 @@ function freezeActivePrompt(commandText) {
     }
 }
 
+// Fuzzy search helper for drug lookup
+function findDrug(query) {
+    const queryClean = query.toLowerCase().trim();
+    if (queryClean === "") return null;
+    
+    // 1. Direct match
+    if (drugDatabase[queryClean]) {
+        return drugDatabase[queryClean];
+    }
+    
+    // 2. Starts with match
+    for (const key in drugDatabase) {
+        if (key.startsWith(queryClean)) {
+            return drugDatabase[key];
+        }
+    }
+    
+    // 3. Contains match
+    for (const key in drugDatabase) {
+        if (key.includes(queryClean)) {
+            return drugDatabase[key];
+        }
+    }
+    
+    return null;
+}
+
 // Execute commands (click or keyboard)
 window.executeCommand = function(cmd, alreadyFrozen = false) {
     const cmdClean = cmd.trim();
@@ -253,7 +280,7 @@ window.executeCommand = function(cmd, alreadyFrozen = false) {
         return;
     }
 
-    // 2. Process actions & Easter eggs
+    // 2. Process actions & Easter eggs & Drug Search
     switch (cmdLower) {
         case 'hello':
             printOutput("Hello world");
@@ -293,12 +320,36 @@ window.executeCommand = function(cmd, alreadyFrozen = false) {
             printOutput('Propofol Dreams Web App: <a href="https://app.propofoldreams.org/" target="_blank">https://app.propofoldreams.org/</a>');
             break;
             
+        case 'drugs':
+        case 'list':
+            const drugList = Object.values(drugDatabase).map(d => `<span class="term-action" onclick="executeCommand('${d.name.split(' ')[0]}')">${d.name}</span>`).join(', ');
+            printOutput(`<p>Available knowledge base drug lookups:</p><p style="margin-top: 5px; color: var(--accent);">${drugList}</p>`);
+            break;
+            
+        case 'help':
+        case '?':
+            printOutput(`
+<p>Available commands: <span class="term-action" onclick="executeCommand('about')">about</span>, <span class="term-action" onclick="executeCommand('research')">research</span>, <span class="term-action" onclick="executeCommand('publications')">publications</span>, <span class="term-action" onclick="executeCommand('contact')">contact</span>, <span class="term-action" onclick="executeCommand('drugs')">drugs</span>, <span class="term-action" onclick="executeCommand('clear')">clear</span></p>
+<p style="margin-top: 5px;">You can also type any drug name (e.g. <span class="term-action" onclick="executeCommand('isoprenaline')">isoprenaline</span>) to look up dosing details.</p>
+            `);
+            break;
+            
         case 'clear':
             termOutput.innerHTML = "";
             break;
             
         default:
-            printOutput(`<span class="error">command not found: ${cmdClean}</span>`);
+            const drug = findDrug(cmdLower);
+            if (drug) {
+                printOutput(`
+                    <div class="drug-result-box">
+                        <div class="drug-name">${drug.name}</div>
+                        <div class="drug-info">${drug.info}</div>
+                    </div>
+                `);
+            } else {
+                printOutput(`<span class="error">command not found: ${cmdClean}</span>`);
+            }
     }
 
     // 3. Re-append prompt line at bottom
