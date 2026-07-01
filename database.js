@@ -29,42 +29,41 @@ const drugDatabase = {
     "labetalol": {
         name: "Labetalol",
         info: "Pre-eclampsia: 20 mg iv bolus over 2 min\nOral 100 mg bd up to max 2400 mg per day"
-    }
+    },
     "lscs": {
         name: "Caesarean Section MBS Item Numbers",
         info: "lscs 20850 | spinal 22031"
-    }
+    },
     "urology": {
         name: "Urology MBS Item Numbers",
         info: "ce 20910 | laser 20911 | turbt 20912\nturp 20914 | genitalia 20920 | tppbx 20900\nnephrectomy 20790 | rarp 20845\npyeloplasty 20862 | transplant 20868"
-    }
+    },
     "cathlab": {
         name: "Cath Lab MBS Item Numbers",
         info: "ppm 21941 | ablation 21942 | toe 21936"
-    }
+    },
     "gynae": {
         name: "Gynaecology MBS Item Numbers",
         info: "hysteroscopy 20952 | d+c 20940 | lap 20806\nvaginal hysterectomy 20944 | genitalia 20920"
-    }
+    },
     "dental": {
         name: "Dental MBS Item Numbers",
         info: "exo 22900 | restore 20940"
-    }
+    },
     "scopes": {
         name: "Endoscopy MBS Item Numbers",
         info: "gas 20740 | colon 20810 | ercp 20745"
-    }
+    },
     "laparoscopy": {
         name: "Laparoscopy MBS Item Numbers",
         info: "upper 20706 | lower 20806 | bowel 20841\nfundo 20756 | gastrectomy 20790"
-    }
+    },
     "procedures": {
         name: "Procedural MBS Item Numbers",
         info: "art 22025 | cvc 22020 | monitor 22012\nblock 22041 | spinal 22031 | blood 22002"
-    }
+    },
     "modifiers": {
         name: "Modifier MBS Item Numbers",
         info: "age74+ 25014 | age4- 25013\nemerg 25020 | afterhour emerg 25025"
     }
-
 };
