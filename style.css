@@ -179,9 +179,12 @@ body {
     background-color: var(--text-primary);
     box-shadow: 0 0 8px var(--text-primary);
     display: inline-block;
-    animation: blink 1.0s infinite;
     position: absolute;
     pointer-events: none;
+}
+
+.cursor.blink {
+    animation: blink 1.0s infinite;
 }
 
 @keyframes blink {

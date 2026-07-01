@@ -186,11 +186,21 @@ function printPromptLine() {
     
     const input = div.querySelector('#cli-input');
     const cursor = div.querySelector('#cli-cursor');
+    const inputContainer = div.querySelector('.input-container');
     
-    input.focus();
+    // Clicking prompt container starts blinking and brings up mobile keyboard
+    inputContainer.addEventListener('click', () => {
+        input.focus();
+        activateBlinking();
+    });
+    
+    input.addEventListener('focus', () => {
+        activateBlinking();
+    });
     
     // Sync cursor offset
     input.addEventListener('input', () => {
+        activateBlinking();
         const textWidth = input.value.length * 9.6;
         cursor.style.left = `${textWidth}px`;
     });
@@ -206,6 +216,14 @@ function printPromptLine() {
     });
 
     termBody.scrollTop = termBody.scrollHeight;
+}
+
+// Activate cursor blinking
+function activateBlinking() {
+    const activeCursor = document.querySelector('#cli-cursor');
+    if (activeCursor) {
+        activeCursor.classList.add('blink');
+    }
 }
 
 // Convert the active prompt to static text and remove its menu
@@ -287,11 +305,15 @@ window.executeCommand = function(cmd, alreadyFrozen = false) {
     printPromptLine();
 };
 
-// Focus input on terminal clicking
-termBody.addEventListener('click', () => {
+// Auto-focus and activate console blinking on key presses (for desktop typing)
+window.addEventListener('keydown', (e) => {
     const activeInput = document.querySelector('#cli-input');
-    if (activeInput && window.getSelection().toString() === '') {
-        activeInput.focus();
+    if (activeInput && document.activeElement !== activeInput) {
+        // Intercept standard printable characters (letters, numbers, space)
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            activeInput.focus();
+            activateBlinking();
+        }
     }
 });
 
